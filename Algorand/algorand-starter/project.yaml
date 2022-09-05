@@ -16,6 +16,7 @@ schema:
 network:
   chainId: "wGHE2Pwdvd7S12BL5FaOP20EGYesN73ktiC1qzkkit8="
   # Must be a non-pruned archive node
+  # This endpoint may not be publicly available
   endpoint: "https://algoindexer.algoexplorerapi.io"
   # Optionally provide the HTTP endpoint of a full chain dictionary to speed up processing
   dictionary: https://api.subquery.network/sq/subquery/Algorand-Dictionary
