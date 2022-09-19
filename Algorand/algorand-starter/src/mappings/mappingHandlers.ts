@@ -3,7 +3,7 @@ import { Block, Transaction } from "../types";
 
 export async function handleBlock(block: AlgorandBlock): Promise<void> {
   const blockEntity: Block = Block.create({
-    id: block.genesisHash,
+    id: block.round.toString(),
     height: block.round,
   });
   await blockEntity.save();
