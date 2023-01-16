@@ -1,7 +1,8 @@
 import { AlgorandBlock, AlgorandTransaction } from "@subql/types-algorand";
-import { Block, Transaction } from "../types";
+import { Block, Transaction, Address } from "../types";
 
 export async function handleBlock(block: AlgorandBlock): Promise<void> {
+  // The trigger handler for this function has been commented out in the project manifest (project.yaml)
   const blockEntity: Block = Block.create({
     id: block.round.toString(),
     height: block.round,
@@ -12,22 +13,30 @@ export async function handleBlock(block: AlgorandBlock): Promise<void> {
 export async function handleTransaction(
   tx: AlgorandTransaction
 ): Promise<void> {
-  const transactionEntity: Transaction = Transaction.create({
-    id: tx.id,
-    blockHeight: tx.confirmedRound,
-    sender: tx.sender,
-    assetId:
-      tx.txType === "afrz"
-        ? BigInt(tx.assetFreezeTransaction.assetId)
-        : tx.txType === "acfg"
-        ? BigInt(tx.assetConfigTransaction.assetId)
-        : undefined,
-    amount:
-      tx.txType === "axfer"
-        ? BigInt(tx.assetTransferTransaction.amount)
-        : tx.txType === "pay"
-        ? BigInt(tx.paymentTransaction.amount)
-        : undefined,
-  });
-  await transactionEntity.save();
+  // logger.info(JSON.stringify(tx));
+  if (tx.assetTransferTransaction) {
+    // ensure that our address entities exist
+    const senderAddress = await Address.get(tx.sender.toLowerCase());
+    if (!senderAddress) {
+      await new Address(tx.sender.toLowerCase()).save();
+    }
+
+    const receiverAddress = await Address.get(
+      tx.assetTransferTransaction.receiver.toLowerCase()
+    );
+    if (!receiverAddress) {
+      await new Address(
+        tx.assetTransferTransaction.receiver.toLowerCase()
+      ).save();
+    }
+
+    // Create the new transfer entity
+    const transactionEntity: Transaction = Transaction.create({
+      id: tx.id,
+      blockHeight: tx.confirmedRound,
+      senderId: tx.sender.toLowerCase(),
+      amount: BigInt(tx.assetTransferTransaction.amount),
+    });
+    await transactionEntity.save();
+  }
 }

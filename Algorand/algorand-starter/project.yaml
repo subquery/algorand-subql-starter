@@ -25,21 +25,18 @@ network:
   # endpoint: "https://algoindexer.testnet.algoexplorerapi.io"
 dataSources:
   - kind: algorand/Runtime
-    startBlock: 50000 # Block to start indexing from (or the block when your contract was deployed)
+    startBlock: 8712119 # Block to start indexing from (or the block when your contract was deployed). Planet was created on https://algoexplorer.io/tx/G66KX3TLKXUI547DFB4MNVY7SJVADOJKGP4SWMRC632GFHSFX5KQ
     mapping:
       file: ./dist/index.js
       handlers:
-        - handler: handleBlock
-          kind: algorand/BlockHandler
+        # block handlers are slow and we are best to avoid them if possible
+        # - handler: handleBlock
+        #   kind: algorand/BlockHandler
         - handler: handleTransaction
           kind: algorand/TransactionHandler
           filter:
-            # payments from the Planet Watch Address
-            txType: pay
+            txType: axfer
+            assetId: 27165954 # Planet watch asset
             sender: "ZW3ISEHZUHPO7OZGMKLKIIMKVICOUDRCERI454I3DB2BH52HGLSO67W754"
-            receiver: "ZW3ISEHZUHPO7OZGMKLKIIMKVICOUDRCERI454I3DB2BH52HGLSO67W754"
-        - handler: handleTransaction
-          kind: algorand/TransactionHandler
-          filter:
-            txType: acfg
-            applicationId: 1
+            # applicationId: 1
+            # receiver: "XXXXX"
