@@ -35,7 +35,7 @@ dataSources:
         - handler: handleTransaction
           kind: algorand/TransactionHandler
           filter:
-            txType: axfer
+            txType: axfer # From the application TransactionType enum https://github.com/algorand/js-algorand-sdk/blob/5eb7b4ffe5fcb46812785fdc79e8a7edb78b084f/src/types/transactions/base.ts#L6
             assetId: 27165954 # Planet watch asset
             sender: "ZW3ISEHZUHPO7OZGMKLKIIMKVICOUDRCERI454I3DB2BH52HGLSO67W754"
             # applicationId: 1
