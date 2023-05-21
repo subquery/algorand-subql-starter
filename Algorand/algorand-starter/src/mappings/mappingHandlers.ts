@@ -1,5 +1,6 @@
 import { AlgorandBlock, AlgorandTransaction } from "@subql/types-algorand";
 import { Block, Transaction, Address } from "../types";
+import assert from "assert";
 
 export async function handleBlock(block: AlgorandBlock): Promise<void> {
   // The trigger handler for this function has been commented out in the project manifest (project.yaml)
@@ -30,6 +31,8 @@ export async function handleTransaction(
       ).save();
     }
 
+    assert(tx.id, "tx.id missing")
+    assert(tx.confirmedRound, "tx.confirmedRound missing")
     // Create the new transfer entity
     const transactionEntity: Transaction = Transaction.create({
       id: tx.id,
