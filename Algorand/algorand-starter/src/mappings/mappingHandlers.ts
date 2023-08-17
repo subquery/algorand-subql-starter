@@ -31,8 +31,8 @@ export async function handleTransaction(
       ).save();
     }
 
-    assert(tx.id, "tx.id missing")
-    assert(tx.confirmedRound, "tx.confirmedRound missing")
+    assert(tx.id, "tx.id missing");
+    assert(tx.confirmedRound, "tx.confirmedRound missing");
     // Create the new transfer entity
     const transactionEntity = Transaction.create({
       id: tx.id,
