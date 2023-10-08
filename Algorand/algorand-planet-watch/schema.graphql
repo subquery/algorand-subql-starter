@@ -1,0 +1,13 @@
+type Transaction @entity {
+  id: ID! # A unique ID - The transaction ID
+  blockHeight: Int!
+  sender: Address!
+  receiver: Address
+  amount: BigInt
+}
+
+type Address @entity {
+  id: ID! # in this case the wallet address
+  sentTransactions: [Transaction] @derivedFrom(field: "sender")
+  recievedTransactions: [Transaction] @derivedFrom(field: "receiver")
+}
