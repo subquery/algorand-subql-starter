@@ -1,0 +1,39 @@
+specVersion: 1.0.0
+name: algorand-planet-watch
+version: 1.0.0
+runner:
+  node:
+    name: "@subql/node-algorand"
+    version: ">=1.0.0"
+  query:
+    name: "@subql/query"
+    version: "*"
+description: >-
+  This project is a quick start guide for developing your Algorand SubQuery project, it indexes Algorand PlanetWatch token transfers
+repository: "https://github.com/jamesbayly/algorand-planet-watch"
+schema:
+  file: ./schema.graphql
+network:
+  chainId: "wGHE2Pwdvd7S12BL5FaOP20EGYesN73ktiC1qzkkit8="
+  # This endpoint must be a public non-pruned archive node
+  # We recommend providing more than one endpoint for improved reliability, performance, and uptime
+  # Public nodes may be rate limited, which can affect indexing speed
+  # When developing your project we suggest getting a private API key
+  # You can get them from OnFinality for free https://app.onfinality.io
+  # https://documentation.onfinality.io/support/the-enhanced-api-service
+  endpoint: ["https://mainnet-idx.algonode.cloud"]
+  # Optionally provide the HTTP endpoint of a full chain dictionary to speed up processing
+  dictionary: "https://api.subquery.network/sq/subquery/Algorand-Dictionary"
+dataSources:
+  - kind: algorand/Runtime
+    startBlock: 8712119 # Block that planet was created on https://algoexplorer.io/tx/G66KX3TLKXUI547DFB4MNVY7SJVADOJKGP4SWMRC632GFHSFX5KQ
+    mapping:
+      file: ./dist/index.js
+      handlers:
+        - handler: handleTransaction
+          kind: algorand/TransactionHandler
+          filter:
+            # payments from the Planet Watch Address for the PLANET asset
+            txType: axfer # From the application TransactionType enum https://github.com/algorand/js-algorand-sdk/blob/5eb7b4ffe5fcb46812785fdc79e8a7edb78b084f/src/types/transactions/base.ts#L6
+            assetId: 27165954
+            sender: "ZW3ISEHZUHPO7OZGMKLKIIMKVICOUDRCERI454I3DB2BH52HGLSO67W754"
