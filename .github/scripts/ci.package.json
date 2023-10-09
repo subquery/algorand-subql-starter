@@ -1,0 +1,11 @@
+{
+  "name": "subql-starters",
+  "private": true,
+  "workspaces": [
+    "Algorand/*"
+  ],
+  "scripts": {
+    "codegen": "yarn workspaces run codegen",
+    "build": "yarn workspaces run build"
+  }
+}
