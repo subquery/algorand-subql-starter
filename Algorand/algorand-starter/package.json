@@ -22,7 +22,7 @@
   "license": "MIT",
   "devDependencies": {
     "@subql/cli": "latest",
-    "typescript": "^5.2.2"
+    "typescript": "latest"
   },
   "resolutions": {
     "ipfs-unixfs": "6.0.6"

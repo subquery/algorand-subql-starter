@@ -12,7 +12,7 @@ export async function handleBlock(block: AlgorandBlock): Promise<void> {
 }
 
 export async function handleTransaction(
-  tx: AlgorandTransaction
+  tx: AlgorandTransaction,
 ): Promise<void> {
   // logger.info(JSON.stringify(tx));
   if (tx.assetTransferTransaction) {
@@ -23,11 +23,11 @@ export async function handleTransaction(
     }
 
     const receiverAddress = await Address.get(
-      tx.assetTransferTransaction.receiver.toLowerCase()
+      tx.assetTransferTransaction.receiver.toLowerCase(),
     );
     if (!receiverAddress) {
       await new Address(
-        tx.assetTransferTransaction.receiver.toLowerCase()
+        tx.assetTransferTransaction.receiver.toLowerCase(),
       ).save();
     }
 
